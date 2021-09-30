@@ -13,7 +13,7 @@ provider "google" {
 
 locals {
   service_name   = "go-api"
-  service-account  = "serviceAccount:${google_service_account.service-account.email}"
+  service-account  = "serviceAccount:${google_service_account.sa.email}"
   url = google_cloud_run_service.service.status[0].url
 }
 
@@ -24,14 +24,14 @@ resource "google_project_service" "iam" {
 }
 
 # Create a service account
-resource "google_service_account" "service-account" {
-  account_id   = "service-account"
+resource "google_service_account" "sa" {
+  account_id   = "sa"
   display_name = "Service Account"
 }
 
 # Create new SA key
 resource "google_service_account_key" "sa_key" {
-  service_account_id = google_service_account.service-account.name
+  service_account_id = google_service_account.sa.name
   public_key_type    = "TYPE_X509_PEM_FILE"
 }
 
@@ -43,7 +43,7 @@ resource "google_project_iam_binding" "service_permissions" {
 
   role       = "roles/${each.key}"
   members    = [local.service-account]
-  depends_on = [google_service_account.service-account]
+  depends_on = [google_service_account.sa]
 }
 
 # Enables the Cloud Build
@@ -77,7 +77,7 @@ resource "google_cloud_run_service" "service" {
 
   template {
     spec {
-      service_account_name = google_service_account.service-account.email
+      service_account_name = google_service_account.sa.email
 
       containers {
         image = data.google_container_registry_image.image.image_url
