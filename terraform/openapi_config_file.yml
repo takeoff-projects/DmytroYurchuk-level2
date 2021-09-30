@@ -1,0 +1,81 @@
+swagger: "2.0"
+info:
+  title: API
+  description: API
+  version: 1.0.0
+host: ${host}
+schemes:
+  - https
+produces:
+  - application/json
+x-google-backend:
+  address: ${address}
+  protocol: h2
+paths:
+  /api/events:
+    get:
+      operationId: get-events
+      summary: Get events
+      responses:
+        '200':
+          description: Response
+          schema:
+            type: array
+            items:
+              type: string
+    post:
+      operationId: post-event
+      summary: Post event
+      parameters:
+        - in: body
+          name: event
+          description: Post event
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                example: Test id
+              title:
+                type: string
+                example: Test title
+              location:
+                type: string
+                example: Test location
+              when:
+                type: string
+                example: Test when
+      responses:
+        '200':
+          description: Response
+          schema:
+            type: string
+  /api/events/{id}:
+    get:
+      operationId: get-event
+      summary: Get event by ID
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Id of event to get
+      responses:
+        '200':
+          description: Response
+          schema:
+            type: string
+    delete:
+      operationId: delete-event
+      summary: Delete event
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Id of event to get
+      responses:
+        '200':
+          description: Response
+          schema:
+            type: string
