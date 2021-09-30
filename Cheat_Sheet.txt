@@ -1,0 +1,26 @@
+
+
+# Build the program:
+go build
+
+# Run the program
+./go-api
+
+# Use Fresh to automatically rebuild project when there are changes
+# Run Fresh from the application's folder
+go get github.com/pilu/fresh
+fresh
+
+
+// Get events with curl 
+curl http://localhost:8080/events
+
+Get one event with curl 
+curl http://localhost:8080/events/2944a9cb-ef2d-4632-ac1d-af2b2629d0f2
+
+
+// Add an event with curl
+curl -X POST -H "Content-Type: application/json"  -d '{"id": "0", "title": "Football Game", "location": "Stadium", "when": "Saturday"}' http://localhost:8080/events
+
+//Delete an event with curl 
+curl -X DELETE http://localhost:8080/events/2944a9cb-ef2d-4632-ac1d-af2b2629d0f2
